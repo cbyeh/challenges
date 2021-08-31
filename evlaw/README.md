@@ -1,5 +1,5 @@
 To compile and run, use the command
 
-`javac EverChessGame.java && java EverChessGame` 
+`javac ChessGame.java && java ChessGame` 
 
-in the directory with **EverChessGame.java**
+in the directory with **ChessGame.java**
