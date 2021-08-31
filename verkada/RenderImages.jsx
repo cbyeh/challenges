@@ -1,0 +1,1 @@
+// Render images without tags
