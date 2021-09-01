@@ -10,7 +10,7 @@ public class ChessGame {
     // Current turn, black or white
     private char currentTurn;
     // Pawns that have captured in a turn
-    private HashSet<Character> captured; // TODO: Use pair of indexes instead
+    private HashSet<Character> captured; // Use pair of indexes
     private boolean hasJustCaptured;
 
     /**
@@ -54,14 +54,25 @@ public class ChessGame {
             return false;
         }
         // Check if valid moves
-        if ((turn == 'W' && r1 == 1 && abs(r1 - r2) > 2) // Check valid starting move for W
-                || (turn == 'W' && r1 == 1 && c1 != c2)) {
+        if (turn == 'W' && r1 == 1 && abs(r1 - r2) > 2) { // Check valid starting move for W
             return false;
-        } else if ((turn == 'B' && r1 == 6 && abs(r1 - r2) > 2) // Check valid starting move for B
-                || (turn == 'B' && r1 == 6 && c1 != c2)) {
+        } else if (turn == 'B' && r1 == 6 && abs(r1 - r2) > 2) { // Check valid starting move for B
             return false;
-        } else if ((turn == 'W' && r1 != 1 && Math.abs(startRow - endRow) > 1)
-                || (turn == 'B' && r1 != 6 && Math.abs(startRow - endRow) > 1)) {
+        } else if ((turn == 'W' && r1 != 1 && abs(startRow - endRow) > 1)
+                || (turn == 'B' && r1 != 6 && abs(startRow - endRow) > 1)) {
+            return false;
+        }
+        // Check if blocked
+        if (turn == 'W' && c1 == c2 && grid[r2][c2] == 'B') {
+            return false;
+        }
+        if (turn == 'B' && c1 == c2 && grid[r2][c2] == 'W') {
+            return false;
+        }
+        // Check if valid columns for capturing, and only allow capture if pawn there
+        if (abs(c1 - c2) > 1) {
+            return false;
+        } else if (abs(c1 - c2) == 1 && (turn == 'W' && grid[r2][c2] != 'B' || turn == 'B' && grid[r2][c2] != 'W')) {
             return false;
         }
         // Perform move and return true. If captured, set hasJustCaptured to true
@@ -116,6 +127,7 @@ public class ChessGame {
         Scanner scanner = new Scanner(System.in);
         while (!game.someoneHasWon()) {
             try {
+                System.out.println("It is " + game.currentTurn + "'s turn");
                 System.out.print("Enter starting row: ");
                 int r1 = Integer.valueOf(scanner.nextLine());
                 System.out.print("Enter starting column: ");
